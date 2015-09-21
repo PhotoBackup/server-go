@@ -2,7 +2,7 @@
 
 Browsing through F-Droid one day, I came across
 [PhotoBackup](https://photobackup.github.io/) - ever since I stopped using
-[Owncloud[(https://www.owncloud.org), the lack of automatic photo uploads from
+[Owncloud](https://www.owncloud.org), the lack of automatic photo uploads from
 my phone to my server has been bugging me, so I installed the client and started
 looking at the server. The concept is reasonable, the API is simple, but the
 implementations are a bit terrifying, so here's my attempt.
@@ -11,8 +11,8 @@ It's written in Go to avoid runtime dependencies; some glaring errors in the
 Python implementation have been corrected. To build from source (assuming
 you already have a Go runtime):
 
-		$ go get github.com/lupine/go-photobackup-server
-		$ cd $GOPATH/src/github.com/lupine/go-photobackup-server
+		$ go get github.com/lupine/photobackup-server-go
+		$ cd $GOPATH/src/github.com/lupine/photobackup-server-go
 		$ go build
 		$ cp config.example ~/.photobackup
 		$ vi ~/.photobackup # Add a Password= or PasswordBcrypt= line
