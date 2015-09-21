@@ -1,0 +1,15 @@
+[photobackup]
+;; Where to write incoming files
+MediaRoot=./incoming
+
+;; Address and port to listen on
+BindAddress=127.0.0.1
+Port=8420
+
+;; Set this if you're proxying, say, /photobackup to this HTTP server
+;HTTPPrefix=/photobackup
+
+;; One of these must be set
+;Password=
+;PasswordBcrypt=
+
