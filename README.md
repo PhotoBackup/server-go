@@ -24,10 +24,6 @@ There's now a HTTP server running on 127.0.0.1:8420 that will upload to
 If there's demand, I'll put up some precompiled blobs. I wouldn't generally
 recommend *using* precompiled blobs you find on the Internet, though.
 
-Generating bcrypt hashes to stick into PasswordBcrypt is a bit of a pain, so
-here's a oneliner to do it in Ruby:
-
-	
 ## Deployment strategy
 
 I'd say stick it under runit or systemd, bound to
