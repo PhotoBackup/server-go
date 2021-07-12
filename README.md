@@ -11,12 +11,14 @@ It's written in Go to avoid runtime dependencies; some glaring errors in the
 Python implementation have been corrected. To build from source (assuming
 you already have a Go runtime):
 
-		$ go get github.com/lupine/photobackup-server-go
-		$ cd $GOPATH/src/github.com/lupine/photobackup-server-go
-		$ go build
-		$ cp config.example ~/.photobackup
-		$ vi ~/.photobackup # Add a Password= or PasswordBcrypt= line
-		$ ./photobackup-server-go
+```shell
+$ go get github.com/lupine/photobackup-server-go
+$ cd $GOPATH/src/github.com/lupine/photobackup-server-go
+$ go build
+$ cp config.example ~/.photobackup
+$ vi ~/.photobackup # Add a Password= or PasswordBcrypt= line
+$ ./photobackup-server-go
+```
 
 There's now a HTTP server running on 127.0.0.1:8420 that will upload to 
 ./incoming with the given password. 
@@ -33,22 +35,33 @@ runtime dependencies, of course.
 
 Here's an nginx reverse proxy directive:
 
-		location /photobackup {
-		    proxy_pass http://127.0.0.1:8420;
-		}
-
+```
+location /photobackup {
+    proxy_pass http://127.0.0.1:8420;
+}
+```
 Here's a systemd unit file:
 
-		[Unit]
-		Description=HTTP server for PhotoBackup
-		After=network.target
+```config
+[Unit]
+Description=HTTP server for PhotoBackup
+After=network.target
 
-		[Service]
-		ExecStart=/home/lupine/bin/photobackup-server-go
-		User=lupine
-		WorkingDirectory=/home/lupine
-		Restart=always
+[Service]
+ExecStart=/home/lupine/bin/photobackup-server-go
+User=lupine
+WorkingDirectory=/home/lupine
+Restart=always
+```
 
+You can also utilize the Docker image.
+Therefore, build the image from this directory and start the image with a linked data directory.
+This folder needs to have the .photobackup config file which sets `MediaRoot=/data` and `BindAddress=0.0.0.0`.
+
+```shell
+$ docker build -t photobackup .
+$ docker run -it -v "$PWD":/data -p 8420:8420 photobackup
+```
 
 ## Features
 
