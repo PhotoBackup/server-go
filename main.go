@@ -125,17 +125,17 @@ func (h *Handler) RootHandler(w http.ResponseWriter, r *http.Request) {
 
 	filename := filepath.Join(h.Config.MediaRoot, upfileHdr.Filename)
 
-	// This will always be vulnerable to races, but here we check if the
-	// file already exists, and return a 409 if it does. This isn't in the
-	// RAML, and the "official" Python API returns nothing AFAICT. This is
+	// Create the file with O_EXCL so that we can detect if the file
+	// already exists and return a 409 if it does. This isn't in the RAML,
+	// and the "official" Python API returns nothing AFAICT. This is
 	// definitely an improvement over that!
-	if _, err := os.Stat(filename); !os.IsNotExist(err) {
-		w.WriteHeader(http.StatusConflict)
-	}
-
-	file, err := os.Create(filename)
+	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0640)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		if os.IsExist(err) {
+			w.WriteHeader(http.StatusConflict)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		w.Write([]byte("Error opening file: " + err.Error()))
 		return
 	}
